@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Puck Shipment Tracker – Ron</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f1115;
+      --bg2:#0b0d12;
+      --card:#151923;
+      --card2:#101421;
+      --muted:#8b93a7;
+      --text:#e6e9f0;
+      --accent:#4f8cff;
+      --line: rgba(255,255,255,.08);
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:linear-gradient(180deg,var(--bg),var(--bg2));
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:1180px;
+      margin:0 auto;
+      padding:24px;
+    }
+
+    /* LOGIN */
+    .login-shell{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .login-card{
+      width:100%;
+      max-width:420px;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:32px;
+      box-shadow:var(--shadow);
+    }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-bottom:14px;
+    }
+    .dot{
+      width:12px;height:12px;border-radius:999px;
+      background:linear-gradient(135deg,var(--accent),#6aa3ff);
+      box-shadow:0 0 0 6px rgba(79,140,255,.12);
+    }
+    .login-card h1{margin:0;font-size:22px;font-weight:650;letter-spacing:.2px}
+    .login-card p{margin:8px 0 22px;color:var(--muted);font-size:13.5px;line-height:1.5}
+
+    .field{margin-bottom:14px}
+    .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+    .field input{
+      width:100%;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#0f1320;
+      color:var(--text);
+      outline:none;
+      font-size:14px;
+    }
+    .field input:focus{border-color:rgba(79,140,255,.55); box-shadow:0 0 0 4px rgba(79,140,255,.12)}
+
+    .btn{
+      width:100%;
+      padding:13px 14px;
+      border-radius:12px;
+      border:none;
+      background:linear-gradient(135deg,var(--accent),#6aa3ff);
+      color:#fff;
+      font-weight:650;
+      font-size:14px;
+      cursor:pointer;
+    }
+    .btn:active{transform:translateY(1px)}
+
+    .error{
+      margin-top:12px;
+      font-size:13px;
+      color:#ff6b6b;
+      display:none;
+    }
+
+    /* DASH */
+    .dash{display:none}
+    .topbar{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+      padding:22px;
+      background:rgba(21,25,35,.6);
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow:0 12px 40px rgba(0,0,0,.35);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      margin-top:18px;
+      margin-bottom:18px;
+    }
+    .title h2{margin:0;font-size:22px;font-weight:700}
+    .title .sub{margin-top:6px;color:var(--muted);font-size:13px}
+    .right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .pill{
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(16,20,33,.6);
+      font-size:12px;
+      color:var(--muted);
+    }
+    .pill b{color:var(--text)}
+
+    .row{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:16px;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 10px 34px rgba(0,0,0,.35);
+    }
+
+    .card-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:16px 18px;
+      background:linear-gradient(180deg, rgba(79,140,255,.10), rgba(0,0,0,0));
+      border-bottom:1px solid var(--line);
+    }
+    .card-head h3{margin:0;font-size:14px;font-weight:650;color:var(--text);letter-spacing:.2px}
+    .meta{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+
+    .kpi{
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(16,20,33,.55);
+      border:1px solid var(--line);
+      font-size:12px;
+      color:var(--muted);
+    }
+    .kpi b{color:var(--text)}
+
+    .table-wrap{overflow:auto}
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width: 860px;
+      background:var(--card);
+    }
+    thead th{
+      position:sticky;
+      top:0;
+      z-index:2;
+      background:rgba(16,20,33,.98);
+      border-bottom:1px solid var(--line);
+      font-size:12px;
+      letter-spacing:.3px;
+      color:#cfd5e6;
+      text-transform:uppercase;
+      padding:12px 12px;
+      text-align:left;
+      white-space:nowrap;
+    }
+    tbody td{
+      border-bottom:1px solid rgba(255,255,255,.06);
+      padding:12px 12px;
+      font-size:13px;
+      color:#d7dbea;
+      vertical-align:top;
+    }
+    tbody tr:hover td{background:rgba(79,140,255,.06)}
+
+    .muted{color:var(--muted)}
+    .qty{font-variant-numeric: tabular-nums; font-weight:650}
+
+    a.doc{
+      color:#cfe0ff;
+      text-decoration:none;
+      font-weight:600;
+    }
+    a.doc:hover{text-decoration:underline}
+
+    .status{
+      margin-top:14px;
+      color:var(--muted);
+      font-size:12px;
+      text-align:center;
+      padding:10px 0 0;
+    }
+
+    .toast{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,107,107,.35);
+      background:rgba(255,107,107,.08);
+      color:#ffb4b4;
+      font-size:13px;
+      display:none;
+    }
+
+          table{min-width: 0}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN VIEW -->
+  <div class="login-shell" id="loginShell">
+    <div class="login-card">
+      <div class="brand">
+        <div class="dot"></div>
+        <div>
+          <h1>Shipment Tracker</h1>
+          <p style="margin:6px 0 0">Ron access · Puck shipments overview</p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Username</label>
+        <input type="text" id="username" placeholder="ron" autocomplete="username" />
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="ron" autocomplete="current-password" />
+      </div>
+
+      <button class="btn" id="loginBtn" type="button">Access Dashboard</button>
+      <div class="error" id="error">Invalid credentials</div>
+
+      <div class="status">Apex Rubber Innovations · Internal view</div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="wrap dash" id="dash">
+
+    <div class="topbar">
+      <div class="title">
+        <h2>Puck Shipments</h2>
+        <div class="sub">Live view · Data pulled from Google Sheets (Tab: <b>For Ron</b>)</div>
+      </div>
+      <div class="right">
+        <div class="pill">User: <b>Ron</b></div>
+        <div class="pill">Updated: <b id="lastUpdated">–</b></div>
+        <button class="btn" id="refreshBtn" type="button" style="width:auto;padding:10px 12px;border-radius:12px">Refresh</button>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <div class="card">
+        <div class="card-head">
+          <h3>All Shipments</h3>
+          <div class="meta">
+            <div class="kpi">Rows: <b id="allRows">0</b></div>
+            <div class="kpi">Total Qty: <b id="allQty">0</b></div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Shipment Number</th>
+                <th>Items and qty</th>
+                <th>Dispatch Date</th>
+                <th>Estimated Delivery</th>
+                <th>Actual Delivery date</th>
+                <th>Important Documents</th>
+              </tr>
+            </thead>
+            <tbody id="allBody">
+              <tr><td colspan="6" class="muted">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    <div class="status">Tip: If data doesn’t load, make the sheet public (Anyone with the link) or publish it to the web.</div>
+  </div>
+
+<script>
+  /*
+    Your expected behavior (confirm):
+    - User enters ron/ron -> shows dashboard
+    - Dashboard pulls exactly these ranges from Tab "For Ron":
+      Upcoming: B3:H10
+      Past:     B14:H33
+    - "Important Documents" column may contain one or more URLs; show them as clickable "Open" links.
+  */
+
+  /* =========================
+     AUTH (simple prototype)
+     ========================= */
+  const USER = "ron";
+  const PASS = "ron";
+
+  function login(){
+    const u = (document.getElementById('username').value || '').trim();
+    const p = (document.getElementById('password').value || '').trim();
+
+    // hide previous error
+    document.getElementById('error').style.display = 'none';
+
+    if(u === USER && p === PASS){
+      document.getElementById('loginShell').style.display = 'none';
+      document.getElementById('dash').style.display = 'block';
+      refresh();
+    } else {
+      document.getElementById('error').style.display = 'block';
+    }
+  }
+
+  /* =========================
+     GOOGLE SHEETS SETTINGS
+     ========================= */
+  const SHEET_ID = '1dxR9oPPW60EltNFCaAWKIncH3oAXJN1FBWtXY7bVTt0';
+  const SHEET_GID = '223056888';
+
+  const RANGE_ALL = 'B5:G33';
+
+  function gvizUrl(range){
+    const base = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq`;
+    const params = new URLSearchParams({
+      gid: SHEET_GID,
+      range,
+      tqx: 'out:json'
+    });
+    return `${base}?${params.toString()}`;
+  }
+
+  async function fetchRange(range){
+    const url = gvizUrl(range);
+    const res = await fetch(url, { cache: 'no-store' });
+    if(!res.ok) throw new Error(`Fetch failed (${res.status})`);
+
+    const text = await res.text();
+    // gviz returns: "/*O_o*/\ngoogle.visualization.Query.setResponse({...});"
+    const json = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+    const obj = JSON.parse(json);
+
+    const table = obj?.table;
+    const rows = (table?.rows || []).map(r => (r.c || []).map(c => (c?.v ?? '').toString().trim()));
+    return rows;
+  }
+
+  function isEmptyRow(r){
+    return r.every(v => !String(v || '').trim());
+  }
+
+  function toNumber(v){
+    const s = String(v || '').replace(/,/g,'').trim();
+    const n = Number(s);
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'",'&#039;');
+  }
+
+  function docCellHTML(value){
+    const v = String(value || '').trim();
+    if(!v) return '<span class="muted">–</span>';
+
+    // If multiple docs separated by commas/new lines
+    const parts = v.split(/\n|,\s*/).map(x => x.trim()).filter(Boolean);
+
+    const links = parts.map((p, i) => {
+      // FIXED: the regex literal was broken before, causing the script to fail to parse
+      const looksUrl = /^https?:\/\//i.test(p) || p.includes('docs.google.com') || p.includes('drive.google.com');
+      if(looksUrl){
+        const href = p.startsWith('http') ? p : 'https://' + p;
+        return `<a class="doc" href="${href}" target="_blank" rel="noopener">Open${parts.length>1 ? ' ' + (i+1) : ''}</a>`;
+      }
+      return `<span>${escapeHtml(p)}</span>`;
+    });
+
+    return links.join(' · ');
+  }
+
+  function renderTable(tbodyId, rows){
+    const tbody = document.getElementById(tbodyId);
+
+    // FILTER RULES:
+    // 1) Remove completely empty rows
+    // 2) Remove header/title rows coming from the sheet itself
+    const usable = rows
+      .filter(r => r.length && !isEmptyRow(r))
+      .filter(r => {
+        const first = String(r[0] || '').toLowerCase();
+        return !(
+          first === 'shipment number' ||
+          first === 'all shipments' ||
+          first === 'upcoming shipments' ||
+          first === 'past shipments'
+        );
+      });
+
+    if(!usable.length){
+      tbody.innerHTML = '<tr><td colspan="6" class="muted">No data</td></tr>';
+      return { count: 0, qty: 0 };
+    }
+
+    let qtySum = 0;
+
+    tbody.innerHTML = usable.map(r => {
+      // Column mapping (B:G):
+      // 0 Shipment Number
+      // 1 Items and qty
+      // 2 Dispatch Date
+      // 3 Estimated Delivery
+      // 4 Actual Delivery date
+      // 5 Important Documents
+      const [shipment, itemsQty, dispatch, eta, actual, docs] = [...r, '', '', '', '', '', ''].slice(0, 6);
+
+      // KPI qty is best-effort extracted from the "Items and qty" text.
+      const m = String(itemsQty || '').match(/(\d[\d,]*)/);
+      if(m) qtySum += toNumber(m[1]);
+
+      return `
+        <tr>
+          <td><b>${escapeHtml(shipment || '–')}</b></td>
+          <td>${escapeHtml(itemsQty || '–')}</td>
+          <td>${escapeHtml(dispatch || '–')}</td>
+          <td>${escapeHtml(eta || '–')}</td>
+          <td>${escapeHtml(actual || '–')}</td>
+          <td>${docCellHTML(docs)}</td>
+        </tr>
+      `;
+    }).join('');
+
+    return { count: usable.length, qty: qtySum };
+  }
+
+  function setToast(msg){
+    const t = document.getElementById('toast');
+    if(!msg){ t.style.display='none'; t.innerText=''; return; }
+    t.style.display='block';
+    t.innerText = msg;
+  }
+
+  async function refresh(){
+    setToast('');
+    document.getElementById('lastUpdated').innerText = 'Loading…';
+
+    try{
+      const all = await fetchRange(RANGE_ALL);
+
+      const stats = renderTable('allBody', all);
+
+      document.getElementById('allRows').innerText = stats.count;
+      document.getElementById('allQty').innerText = stats.qty.toLocaleString();
+
+      const now = new Date();
+      document.getElementById('lastUpdated').innerText = now.toLocaleString();
+    }
+    catch(err){
+      console.error(err);
+      document.getElementById('allBody').innerHTML = '<tr><td colspan="6" class="muted">Could not load data.</td></tr>';
+      document.getElementById('lastUpdated').innerText = '–';
+
+      setToast(
+        'Data load failed. Fix: Share the sheet as “Anyone with the link can view” OR File → Share/Publish to web. ' +
+        'Then refresh. (This page reads via Google gviz endpoint.)'
+      );
+    }
+  }
+
+  /* =========================
+     Wire up UI events safely
+     (avoids inline onclick issues)
+     ========================= */
+  function bindUI(){
+    const loginBtn = document.getElementById('loginBtn');
+    const refreshBtn = document.getElementById('refreshBtn');
+
+    if(loginBtn) loginBtn.addEventListener('click', login);
+    if(refreshBtn) refreshBtn.addEventListener('click', refresh);
+
+    // Allow Enter key to login while login screen is visible
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' && document.getElementById('loginShell').style.display !== 'none'){
+        login();
+      }
+    });
+  }
+
+  /* =========================
+     Lightweight self-tests
+     (runs in console)
+     ========================= */
+  function runTests(){
+    try{
+      console.assert(typeof login === 'function', 'Expected login() to be defined');
+      console.assert(typeof refresh === 'function', 'Expected refresh() to be defined');
+
+      const html1 = docCellHTML('https://example.com/doc.pdf');
+      console.assert(html1.includes('href="https://example.com/doc.pdf"'), 'Expected docCellHTML to render a link');
+
+      const html2 = docCellHTML('');
+      console.assert(html2.includes('muted'), 'Expected empty doc cell to show muted dash');
+
+      const html3 = docCellHTML('https://a.com, https://b.com');
+      console.assert((html3.match(/<a /g) || []).length === 2, 'Expected two links for comma-separated URLs');
+    } catch (e){
+      console.error('Self-tests failed:', e);
+    }
+  }
+
+  // Ensure everything is bound after DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    bindUI();
+    runTests();
+  });
+
+  // Keep globals available if you ever re-add inline onclick attributes
+  window.login = login;
+  window.refresh = refresh;
+</script>
+</body>
+</html>
