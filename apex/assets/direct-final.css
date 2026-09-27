@@ -1,0 +1,8 @@
+
+html,body{max-width:100%;overflow-x:hidden}
+.apex-mystery-hidden,.pqf-mystery{position:relative!important;overflow:hidden!important}
+.quest-home-puck.puck-2 img,.quest-home-puck.puck-3 img,.pqf-disc--b img,.pqf-disc--c img,.pqf-art-board .pqf-mini:not(:first-child) img{filter:blur(14px) saturate(.58) brightness(.58)!important;transform:scale(1.09)!important}
+.quest-home-puck.puck-2::after,.quest-home-puck.puck-3::after,.pqf-disc--b::after,.pqf-disc--c::after,.pqf-art-board .pqf-mini:not(:first-child)::after{content:'?';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;color:#fff;font:900 clamp(34px,6vw,82px)/1 Arial,sans-serif;text-shadow:0 3px 18px #000;pointer-events:none}
+.pqf-art-board .pqf-mini:not(:first-child) span{opacity:0!important}
+.gf-sample-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:flex-end}.gf-sample-actions .btn{white-space:nowrap}
+@media(max-width:720px){.gf-sample-actions{width:100%;display:grid;grid-template-columns:1fr}.gf-sample-actions .btn{width:100%}}
