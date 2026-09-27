@@ -61,7 +61,7 @@
       if (!ok) { message.textContent = 'Those review credentials do not match. Use the access shown below.'; return; }
       sessionStorage.setItem(`pq-${role}-review`, '1');
       message.textContent = 'Access confirmed. Opening the review…';
-      location.href = role === 'admin' ? '/shipment-tracker/apex/shipment-tracker/apex/puckquest/admin' : '/shipment-tracker/apex/shipment-tracker/apex/puckquest/collector';
+      location.href = role === 'admin' ? '/shipment-tracker/apex/puckquest/admin/' : '/shipment-tracker/apex/puckquest/collector/';
     });
   }
 
@@ -74,7 +74,7 @@
       'E1-APEX-010': {code:'E1-APEX-010',art:'flame',name:'Cold Fire',edition:'01'}
     };
     try {
-      const response = await fetch('/shipment-tracker/apex/shipment-tracker/apex/api/puckquest', {method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'lookup',code})});
+      const response = await fetch('/api/puckquest', {method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'lookup',code})});
       if (response.ok) return response.json();
     } catch (_) {}
     if (reviewInventory[code]) return reviewInventory[code];

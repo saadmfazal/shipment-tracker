@@ -1,4 +1,4 @@
-const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_PATH=location.pathname.startsWith(__APEX_BASE)?(location.pathname.slice(__APEX_BASE.length)||'/shipment-tracker/apex/'):location.pathname;
+const __APEX_BASE='/shipment-tracker/apex'; const __APEX_PATH=location.pathname.startsWith(__APEX_BASE)?(location.pathname.slice(__APEX_BASE.length)||'/'):location.pathname;
 (() => {
   'use strict';
 
@@ -65,7 +65,7 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
     const render = () => {
       const current = readCart();
       if (!current.length) {
-        lines.innerHTML = '<div class="static-cart__empty"><strong>YOUR BAG IS EMPTY.</strong><p>Build your next order from the Apex lineup.</p><a href="/shipment-tracker/apex/shipment-tracker/apex/shop" class="btn">Explore pucks ↗</a></div>';
+        lines.innerHTML = '<div class="static-cart__empty"><strong>YOUR BAG IS EMPTY.</strong><p>Build your next order from the Apex lineup.</p><a href="/shop" class="btn">Explore pucks ↗</a></div>';
         foot.innerHTML = '';
         return;
       }
@@ -99,7 +99,7 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
       document.querySelector('.static-menu')?.remove();
       const menu = document.createElement('div');
       menu.className = 'static-menu';
-      menu.innerHTML = `<div class="static-menu__head"><img src="https://apex-hockey-george-review.vercel.app/assets/logo.svg" alt="Apex Hockey Pucks"><button aria-label="Close navigation">×</button></div><nav><a href="/shipment-tracker/apex/shipment-tracker/apex/shop">Shop pucks</a><a href="/shipment-tracker/apex/shipment-tracker/apex/custom-pucks">Custom pucks</a><a href="/shipment-tracker/apex/shipment-tracker/apex/team-orders">Team & bulk</a><a href="/shipment-tracker/apex/shipment-tracker/apex/puckquest">PuckQuest</a><a href="/shipment-tracker/apex/shipment-tracker/apex/manufacturing">Our craft</a><a href="/shipment-tracker/apex/shipment-tracker/apex/contact">Contact Apex</a></nav>`;
+      menu.innerHTML = `<div class="static-menu__head"><img src="https://apex-hockey-george-review.vercel.app/assets/logo.svg" alt="Apex Hockey Pucks"><button aria-label="Close navigation">×</button></div><nav><a href="/shop">Shop pucks</a><a href="/custom-pucks">Custom pucks</a><a href="/team-orders">Team & bulk</a><a href="/puckquest">PuckQuest</a><a href="/manufacturing">Our craft</a><a href="/contact">Contact Apex</a></nav>`;
       document.body.appendChild(menu);
       menu.querySelector('button').addEventListener('click', () => menu.remove());
     }));
@@ -141,7 +141,7 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
       ['42365760503942', 'Pacific Division — 2 random from 8', '$15.00'],
       ['42365760536710', 'Central Division — 2 random from 8', '$15.00']
     ];
-    const isQuest = __APEX_PATH.includes('/shipment-tracker/apex/shipment-tracker/apex/products/apex-puckquest-e1');
+    const isQuest = __APEX_PATH.includes('/products/apex-puckquest-e1');
     const questField = isQuest ? document.querySelector('.product-purchase .field') : null;
     if (questField && !questField.querySelector('.pack-options label')) {
       questField.innerHTML = `
@@ -180,7 +180,7 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
       if (packName) packName.textContent = product.pack;
       if (add.tagName === 'BUTTON') add.disabled = !product.available;
       if (add.tagName === 'A' && !product.available) {
-        add.href = `/shipment-tracker/apex/shipment-tracker/apex/contact?type=Stock%20inquiry&product=${encodeURIComponent(product.name)}`;
+        add.href = `/contact?type=Stock%20inquiry&product=${encodeURIComponent(product.name)}`;
       }
       add.dataset.variant = id;
       add.innerHTML = product.available

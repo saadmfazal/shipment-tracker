@@ -1,4 +1,4 @@
-const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_PATH=location.pathname.startsWith(__APEX_BASE)?(location.pathname.slice(__APEX_BASE.length)||'/shipment-tracker/apex/'):location.pathname;
+const __APEX_BASE='/shipment-tracker/apex'; const __APEX_PATH=location.pathname.startsWith(__APEX_BASE)?(location.pathname.slice(__APEX_BASE.length)||'/'):location.pathname;
 (() => {
   'use strict';
 
@@ -93,7 +93,7 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
   }
 
   function lockRegisteredTransfers() {
-    if (!__APEX_PATH.startsWith('/shipment-tracker/apex/shipment-tracker/apex/puckquest')) return;
+    if (!__APEX_PATH.startsWith('/puckquest')) return;
     const blocked = ['TRANSFER', 'TRANSFERS', 'GIFT', 'GIFTS & SWAPS', 'MARKET'];
     document.querySelectorAll('button, a').forEach(el => {
       const label = el.textContent.trim().toUpperCase();
@@ -124,7 +124,7 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
         <div class="apex-calc-row"><span>Team discount</span><b data-discount>1%</b></div>
         <div class="apex-calc-row"><span>Estimated puck total</span><b data-total>$276.21</b></div>
         <p>Estimate uses the published $93 game-puck 100-pack. Taxes, shipping, custom print work and delivery dates are confirmed by Apex.</p>
-        <a class="btn full" data-quote href="/shipment-tracker/apex/shipment-tracker/apex/contact?type=Team+%26+bulk&quantity=300">Request this team quote ↗</a>
+        <a class="btn full" data-quote href="/contact?type=Team+%26+bulk&quantity=300">Request this team quote ↗</a>
       </div>`;
     const number = old.querySelector('#apex-bulk-qty');
     const range = old.querySelector('#apex-bulk-range');
@@ -141,7 +141,7 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
       old.querySelector('[data-base]').textContent = money(base);
       old.querySelector('[data-discount]').textContent = `${discount}%`;
       old.querySelector('[data-total]').textContent = money(total);
-      old.querySelector('[data-quote]').href = `/shipment-tracker/apex/shipment-tracker/apex/contact?type=Team+%26+bulk&quantity=${finalQty}&details=${encodeURIComponent(`Estimated ${discount}% team discount · ${money(total)} puck total before tax, shipping and customization`)}`;
+      old.querySelector('[data-quote]').href = `/contact?type=Team+%26+bulk&quantity=${finalQty}&details=${encodeURIComponent(`Estimated ${discount}% team discount · ${money(total)} puck total before tax, shipping and customization`)}`;
     };
     number.addEventListener('input', event => update(event.target.value));
     number.addEventListener('blur', event => update(event.target.value));
@@ -162,15 +162,15 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
   }
 
   function fixPuckQuestPricing() {
-    if (__APEX_PATH === '/shipment-tracker/apex/shipment-tracker/apex/shop') {
+    if (__APEX_PATH === '/shop') {
       const price = document.querySelector('.shop-puckquest > div > span');
       if (price) {
         if (/\$15\.00/.test(price.textContent)) price.textContent = 'FROM $5.00';
         price.setAttribute('aria-label', 'From $5.00');
       }
     }
-    if (__APEX_PATH === '/shipment-tracker/apex/') {
-      const price = document.querySelector('a.product-card-info[href="/shipment-tracker/apex/shipment-tracker/apex/products/apex-puckquest-e1"] > span');
+    if (__APEX_PATH === '/') {
+      const price = document.querySelector('a.product-card-info[href="/products/apex-puckquest-e1"] > span');
       const amount = price && [...price.childNodes].find(node => node.nodeType === Node.TEXT_NODE && /\$/.test(node.nodeValue));
       if (amount) amount.nodeValue = '$5.00';
       if (price) price.setAttribute('aria-label', 'From $5.00');
@@ -178,7 +178,7 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
   }
 
   function fixGeorgeHomepage() {
-    if (__APEX_PATH !== '/shipment-tracker/apex/') return;
+    if (__APEX_PATH !== '/') return;
     const title = document.querySelector('.impact-title');
     if (title) {
       title.classList.add('brand-final');
@@ -205,7 +205,7 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
   }
 
   function finalizeHomepageSections() {
-    if (__APEX_PATH !== '/shipment-tracker/apex/') return;
+    if (__APEX_PATH !== '/') return;
     const bridge = document.querySelector('.quest-home, .home-puckquest, .puckquest-bridge, [class*="puckquest-home"]');
     if (bridge) {
       const eyebrow = bridge.querySelector('.eyebrow, small');
@@ -215,8 +215,8 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
       if (heading) heading.innerHTML = 'COLLECT THEM.<br>GUESS THEM.<br>CLAIM PRIZES.';
       if (copy) copy.textContent = 'Thirty-two printed themes. One code per puck. Permanent registration. Start the Quest.';
       const links = bridge.querySelectorAll('a');
-      if (links[0]) { const text=[...links[0].childNodes].find(n=>n.nodeType===Node.TEXT_NODE); if(text) text.nodeValue='LOGIN TO PUCKQUEST '; links[0].href='/shipment-tracker/apex/shipment-tracker/apex/puckquest/login'; }
-      if (links[1]) { const text=[...links[1].childNodes].find(n=>n.nodeType===Node.TEXT_NODE); if(text) text.nodeValue='BUY PUCKQUEST MINIS '; links[1].href='/shipment-tracker/apex/shipment-tracker/apex/products/apex-puckquest-e1'; }
+      if (links[0]) { const text=[...links[0].childNodes].find(n=>n.nodeType===Node.TEXT_NODE); if(text) text.nodeValue='LOGIN TO PUCKQUEST '; links[0].href='/puckquest/login'; }
+      if (links[1]) { const text=[...links[1].childNodes].find(n=>n.nodeType===Node.TEXT_NODE); if(text) text.nodeValue='BUY PUCKQUEST MINIS '; links[1].href='/products/apex-puckquest-e1'; }
     }
 
     const detail = document.querySelector('.macro-break');
@@ -236,7 +236,7 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
   }
 
   function finalizeShop() {
-    if (__APEX_PATH !== '/shipment-tracker/apex/shipment-tracker/apex/shop') return;
+    if (__APEX_PATH !== '/shop') return;
     const intro = document.querySelector('.shop-intro');
     if (intro) {
       const h1 = intro.querySelector('h1');
@@ -257,9 +257,9 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
       mini.innerHTML = `
         <div class="mini-collection-heading"><div><p class="eyebrow">03 / MINI PUCKS</p><h2 id="mini-collection-title">SMALL FORMAT.<br>THREE PRODUCTS.</h2></div><p>Standalone Apex mini products. They are sold independently and are not part of the PuckQuest collectible game.</p></div>
         <div class="gf-mini-grid">
-          <a class="gf-mini-product" href="/shipment-tracker/apex/shipment-tracker/apex/products/mini-keychain-puck"><span class="gf-mini-visual gf-mini-keychain"><i></i><b>APEX</b></span><small>01 / EVERYDAY CARRY</small><h3>MINI KEYCHAIN PUCK</h3><p>A compact Apex puck with a key ring for bags, keys, gifts and branded programs.</p><strong>View product →</strong></a>
-          <a class="gf-mini-product" href="/shipment-tracker/apex/shipment-tracker/apex/products/mini-magnet-puck"><span class="gf-mini-visual gf-mini-magnet"><b>APEX</b></span><small>02 / DISPLAY</small><h3>MINI MAGNET PUCK</h3><p>A compact magnetic puck for lockers, fridges, team boards and everyday display.</p><strong>View product →</strong></a>
-          <a class="gf-mini-product" href="/shipment-tracker/apex/shipment-tracker/apex/products/knuckle-puck"><span class="gf-mini-visual gf-mini-photo"><img src="https://apex-hockey-george-review.vercel.app/assets/knuckle-puck-play-diagram.svg" alt="Top-down Knuckle Puck finger-flick setup with an index-and-pinky goal"></span><small>03 / TABLETOP GAME</small><h3>KNUCKLE PUCK</h3><p>The mini puck built for Apex’s two-player finger-flick tabletop game.</p><strong>Rules &amp; product →</strong></a>
+          <a class="gf-mini-product" href="/products/mini-keychain-puck"><span class="gf-mini-visual gf-mini-keychain"><i></i><b>APEX</b></span><small>01 / EVERYDAY CARRY</small><h3>MINI KEYCHAIN PUCK</h3><p>A compact Apex puck with a key ring for bags, keys, gifts and branded programs.</p><strong>View product →</strong></a>
+          <a class="gf-mini-product" href="/products/mini-magnet-puck"><span class="gf-mini-visual gf-mini-magnet"><b>APEX</b></span><small>02 / DISPLAY</small><h3>MINI MAGNET PUCK</h3><p>A compact magnetic puck for lockers, fridges, team boards and everyday display.</p><strong>View product →</strong></a>
+          <a class="gf-mini-product" href="/products/knuckle-puck"><span class="gf-mini-visual gf-mini-photo"><img src="https://apex-hockey-george-review.vercel.app/assets/knuckle-puck-play-diagram.svg" alt="Top-down Knuckle Puck finger-flick setup with an index-and-pinky goal"></span><small>03 / TABLETOP GAME</small><h3>KNUCKLE PUCK</h3><p>The mini puck built for Apex’s two-player finger-flick tabletop game.</p><strong>Rules &amp; product →</strong></a>
         </div>`;
     }
   }
@@ -272,23 +272,23 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
       if (link) {
         const text = [...link.childNodes].find(node => node.nodeType === Node.TEXT_NODE);
         if (text) text.nodeValue = 'Explore Pucks ';
-        link.href = '/shipment-tracker/apex/shipment-tracker/apex/shop';
+        link.href = '/shop';
       }
     });
   }
 
   function addTermsRules() {
-    if (__APEX_PATH !== '/shipment-tracker/apex/shipment-tracker/apex/support/terms' || document.querySelector('.gf-rules-summary')) return;
+    if (__APEX_PATH !== '/support/terms' || document.querySelector('.gf-rules-summary')) return;
     const target = document.querySelector('main');
     if (!target) return;
     const section = document.createElement('section');
     section.className = 'gf-rules-summary';
-    section.innerHTML = `<p class="eyebrow">PUCKQUEST / PRE-LAUNCH RULES REVIEW</p><h2>NO PURCHASE NECESSARY ROUTE.</h2><p>PuckQuest is not represented as an active cash promotion on this review site. A mail-in free-entry method and complete Official Rules will be published before launch. The current review framework is for adults age 21 or older.</p><p>Launch dates, sponsor language, eligibility jurisdictions, mailing address, request quantities and all final claim requirements remain subject to official legal approval. No placeholder in a draft document should be treated as a live term.</p><a class="text-link" href="/shipment-tracker/apex/shipment-tracker/apex/puckquest">Review the PuckQuest flow →</a>`;
+    section.innerHTML = `<p class="eyebrow">PUCKQUEST / PRE-LAUNCH RULES REVIEW</p><h2>NO PURCHASE NECESSARY ROUTE.</h2><p>PuckQuest is not represented as an active cash promotion on this review site. A mail-in free-entry method and complete Official Rules will be published before launch. The current review framework is for adults age 21 or older.</p><p>Launch dates, sponsor language, eligibility jurisdictions, mailing address, request quantities and all final claim requirements remain subject to official legal approval. No placeholder in a draft document should be treated as a live term.</p><a class="text-link" href="/puckquest">Review the PuckQuest flow →</a>`;
     target.appendChild(section);
   }
 
   function finalizeCustomPage() {
-    if (__APEX_PATH !== '/shipment-tracker/apex/shipment-tracker/apex/custom-pucks' || document.querySelector('.gf-custom-proof')) return;
+    if (__APEX_PATH !== '/custom-pucks' || document.querySelector('.gf-custom-proof')) return;
     const studio = document.querySelector('.custom-studio, .print-lab');
     if (!studio) return;
     const note = document.createElement('div');
@@ -298,7 +298,7 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
   }
 
   function finalizePuckQuestProduct() {
-    if (__APEX_PATH !== '/shipment-tracker/apex/shipment-tracker/apex/products/apex-puckquest-e1') return;
+    if (__APEX_PATH !== '/products/apex-puckquest-e1') return;
     const purchase = document.querySelector('.product-purchase');
     if (!purchase) return;
     const eyebrow = purchase.querySelector('.eyebrow');
@@ -325,12 +325,12 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
       const link = bridge.querySelector('a');
       if (title) title.textContent = 'ALREADY HAVE A PUCK?';
       if (small) small.textContent = 'Register its one-time code and make your initial team guess.';
-      if (link) { link.href = '/shipment-tracker/apex/shipment-tracker/apex/puckquest/login'; const text=[...link.childNodes].find(n=>n.nodeType===Node.TEXT_NODE); if(text) text.nodeValue='Register & Guess '; }
+      if (link) { link.href = '/puckquest/login'; const text=[...link.childNodes].find(n=>n.nodeType===Node.TEXT_NODE); if(text) text.nodeValue='Register & Guess '; }
     }
   }
 
   function finalizeTeamPage() {
-    if (__APEX_PATH !== '/shipment-tracker/apex/shipment-tracker/apex/team-orders') return;
+    if (__APEX_PATH !== '/team-orders') return;
     const buyers = document.querySelector('.buyers');
     if (!buyers) return;
     const title = buyers.querySelector('.section-heading h2');
@@ -339,21 +339,21 @@ const __APEX_BASE='/shipment-tracker/apex/shipment-tracker/apex'; const __APEX_P
       const name = article.querySelector('h3')?.textContent.trim();
       const link = article.querySelector('a');
       if (!name || !link) return;
-      link.href = `/shipment-tracker/apex/shipment-tracker/apex/contact?type=${encodeURIComponent('Team & bulk')}&details=${encodeURIComponent(`${name} inquiry`)}`;
+      link.href = `/contact?type=${encodeURIComponent('Team & bulk')}&details=${encodeURIComponent(`${name} inquiry`)}`;
     });
   }
 
   function removeGeorgeFlaggedSections() {
-    if (__APEX_PATH === '/shipment-tracker/apex/shipment-tracker/apex/team-orders') {
+    if (__APEX_PATH === '/team-orders') {
       document.querySelector('.sample-banner')?.remove();
     }
-    if (__APEX_PATH === '/shipment-tracker/apex/shipment-tracker/apex/faq' || __APEX_PATH === '/shipment-tracker/apex/shipment-tracker/apex/custom-pucks') {
+    if (__APEX_PATH === '/faq' || __APEX_PATH === '/custom-pucks') {
       document.querySelectorAll('.faq-list button').forEach(button => {
         if (button.textContent.trim() !== 'Will a printed logo wear on the ice?') return;
         const item = button.closest('.border-b');
         if (item) item.remove();
       });
-      if (__APEX_PATH === '/shipment-tracker/apex/shipment-tracker/apex/faq') {
+      if (__APEX_PATH === '/faq') {
         document.querySelectorAll('*').forEach(node => {
           if (node.childElementCount === 0 && node.textContent.trim() === '15 QUESTIONS') node.textContent = '14 QUESTIONS';
         });
